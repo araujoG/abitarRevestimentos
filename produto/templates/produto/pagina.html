@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block corpo %}
+    {% if produto %}
+        <button type="button" class="btn btn-primary">Primary</button>
+        {{produto}}
+    {% else %}
+        Produto não encontrado
+    {% endif %}
+{% endblock %}

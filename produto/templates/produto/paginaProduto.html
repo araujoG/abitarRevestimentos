@@ -1,0 +1,229 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titulo %}
+{{produto.nome}}
+{% endblock %}
+
+{% block corpo %}
+	
+
+	<div class="mx-auto container pt-2">
+
+		{% if messages %}
+			{% for mensagem in messages %}
+				<div class="alert alert-warning alert-dismissible fade show mb-2" role="alert">
+					<strong>{{mensagem}}</strong> 
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			{% endfor %}
+		{% endif %}
+
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb my-1">
+				<li class="breadcrumb-item"><a href="/">Página Inicial</a></li>
+				<li class="breadcrumb-item"><a href="">Produtos</a></li>
+				<li class="breadcrumb-item active" aria-current="page">{{produto.categoria}}</li>
+			</ol>
+		</nav>
+		<div class="card h-100 mb-3 px-5 py-4">
+			<div class="row">
+				<div class="col-lg-5 d-flex align-items-center mb-3 mb-lg-0">
+					<div>
+						<img class="img-fluid w-100 mb-2" src="{{ produto.imagem }}"
+							alt="{{produto.nome}}">
+						<div class="d-flex justify-content-around">
+							<a href="#" type="button" class="text-pink"><i class="fas fa-heart"></i>
+								Lista de Desejos</a>
+							<a href="#" type="button" class="text-black-50"><i class="fas fa-share-alt"></i>
+								Compartilhar</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-7">
+					<div class="card border-0">
+						<h2 class="mb-0 carterOne"><strong>{{produto.nome}}</strong>
+						</h2>
+						<div class="mb-2">Marca: {{produto.marca}}</div>
+						<div class="d-flex align-items-center mb-2">
+							<div id="starRateAvg" data-av="5"></div>
+							<div id="starRateNumberAvg" class="badgeStartRate"></div>
+							<span class="ml-4 text-black-50">Código: {{produto.codigo}}</span>
+						</div>
+						<hr class="mt-0 mb-3">
+						<div class="d-flex align-items-center mb-4">
+							<h5 class="mr-2">Vendido e entregue por:</h5><img class="brandInline"
+								src="" alt="Abitar Revestimentos"></img>
+						</div>
+						<div class="row mb-4">
+							<div class="col-sm-7 col-md-6 mb-3 mb-sm-0">
+								<h5 class="mb-3">de <strike class="ml-1 ">{{ produto.preco }}</strike></h5>
+								<div class="d-flex align-items-center mb-2">
+									<h4 class="mb-0">por</h4>
+									<h4 class="precoCarrinho ml-1 mb-0">R$ {{ produto.preco }}</h4>
+								</div>
+								<h5 class="mb-0">ou em até 6x de {{ produto.getPrecoParcelado }}</h5>
+							</div>
+							
+							<form method="POST" action="{{produto.getAbsoluteUrl}}" class="col-sm-5 col-md-6 d-flex flex-column align-items-center justify-content-center">
+								<div >
+									<button class="btn btn-primary adicionarCarrinho" type="submit">
+										<h3 class="my-2">Comprar</h3>
+									</button>
+									{% csrf_token %}
+								</div>
+								<div class="d-flex flex-column m-2 inputQuantidade">
+									<div class="input-group" >
+										<div class="input-group-prepend">
+											<button type="button" id="" class="diminuiQuantidade btn btn-primary"
+												data-type="minus"  data-field="quantidade"><i
+													class="fas fa-minus font-22 mb-0 align-middle"></i></button>
+										</div>
+										<input type="text" id="quantidade" name="quantidade" data-step="{{produto.multiploDeVenda}}" class="form-control text-center" value="{{produto.multiploDeVenda}}" min="{{produto.multiploDeVenda}}"
+											max="999">
+										<div class="input-group-append">
+											<button type="button" id="" class="aumentaQuantidade btn btn-success"
+												data-type="plus" data-field="quantidade"><i
+													class="fas fa-plus font-22 mb-0 align-middle"></i></button>
+										</div>
+									</div>
+									<h6 class="text-center">Cobertura em M²</h6>
+								</div>
+								
+							</form>
+						</div>
+						<div class="d-flex align-items-center flex-column" >
+							<h6 class="">Calcule o frete e o prazo de entrega:</h6>
+							<div class="input-group inputCepFrete">
+								<input id="inputCepFrete" class="form-control mr-0" type="text"
+									placeholder="Insira o CEP" aria-label="Calcule o Frete">
+								<div class="input-group-append">
+									<button class="btn btn-warning fontWhite" type="button">OK</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="card px-4 py-4 mb-3">
+			<h3 class="carterOne mb-3">Informações do Produto</h3>
+			<p>{{ produto.descricao }}</p>
+		</div>
+		{% comment %} <div class="card px-4 py-4 mb-3">
+			<h3 class="carterOne mb-3">Avaliações</h3>
+			<div class="card px-4 py-3 mb-2">
+				<div class="d-flex align-items-center">
+					<img class="rounded-circle profilePhotoInline mr-1" src="{% static '/images/profile1.png'%}"
+						alt="Imagem de perfil do pedro jorge garcia">
+					<h5 class="my-0 ml-1">Pedro Jorge Garcia</h5>
+				</div>
+				<div class="d-flex align-items-center">
+					<div id="starRate1"></div>
+					<div id="starRate1Number" class="badgeStartRate"></div>
+				</div>
+				<span class="text-black-50 mb-3">Avaliado no dia 15 de Outubro de 2020</span>
+				<p class="mb-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam gravida elit nec sapien
+					interdum
+					sagittis. Nulla dignissim erat eu mauris dignissim, ac vestibulum est laoreet. Phasellus sapien
+					metus,
+					cursus a tempus at, viverra laoreet sapien. Donec ullamcorper sit amet nibh eget aliquam. Donec
+					sodales
+					mattis orci, ut consequat tortor pretium eu. Pellentesque tincidunt, nunc non condimentum mattis,
+					metus
+					risus dignissim lacus, at consequat justo odio sit amet dui. Cras ut metus eleifend est ultricies
+					aliquam vel sit amet ante. In dignissim pellentesque suscipit. Vivamus at nisi dapibus, accumsan
+					neque
+					in, consectetur nunc. Nam efficitur ex faucibus, imperdiet ex eget, vehicula purus. Donec commodo
+					sagittis hendrerit. Proin semper eget sapien id porta. Proin sed ultricies nunc.
+				</p>
+				<h5>Essa avaliação foi útil?</h5>
+				<div id="avRate1" class="d-flex align-items-center avaliacao">
+					<span class="text-black-50" id="like" data-like="7" data-field="#avRate1"></span>
+					<a id="likeBtn" href="#" type="button" class="mx-2 font-25 likeBtn" data-field="#avRate1"
+						data-clicked='0'><i class="far fa-thumbs-up"></i></a>
+					<a id="dislikeBtn" href="#" type="button" class="mx-2 font-25 dislikeBtn" data-field="#avRate1"
+						data-clicked='0'><i class="far fa-thumbs-down"></i></a>
+					</a>
+					<span class="text-black-50" id="dislike" data-dislike="4" data-field="#avRate1"></span>
+				</div>
+			</div>
+			<div class="card px-4 py-3 mb-2">
+				<div class="d-flex align-items-center">
+					<img class="rounded-circle profilePhotoInline mr-1" src="{% static '/images/profile2.png'%}"
+						alt="Imagem de perfil do emerson souza">
+					<h5 class="my-0 ml-1">Emerson Souza</h5>
+				</div>
+				<div class="d-flex align-items-center">
+					<div id="starRate2"></div>
+					<div id="starRate2Number" class="badgeStartRate"></div>
+				</div>
+				<span class="text-black-50 mb-3">Avaliado no dia 23 de Junho de 2020</span>
+				<p class="mb-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam gravida elit nec sapien
+					interdum
+					sagittis. Nulla dignissim erat eu mauris dignissim, ac vestibulum est laoreet. Phasellus sapien
+					metus,
+					cursus a tempus at, viverra laoreet sapien. Donec ullamcorper sit amet nibh eget aliquam. Donec
+					sodales
+					mattis orci, ut consequat tortor pretium eu. Pellentesque tincidunt, nunc non condimentum mattis,
+					metus
+					risus dignissim lacus, at consequat justo odio sit amet dui. Cras ut metus eleifend est ultricies
+					aliquam vel sit amet ante. In dignissim pellentesque suscipit. Vivamus at nisi dapibus, accumsan
+					neque
+					in, consectetur nunc. Nam efficitur ex faucibus, imperdiet ex eget, vehicula purus. Donec commodo
+					sagittis hendrerit. Proin semper eget sapien id porta. Proin sed ultricies nunc.
+				</p>
+				<h5>Essa avaliação foi útil?</h5>
+				<div id="avRate2" class="d-flex align-items-center avaliacao">
+					<span class="text-black-50" id="like" data-like="1" data-field="#avRate2"></span>
+					<a id="likeBtn" href="#" type="button" class="mx-2 font-25 likeBtn" data-field="#avRate2"
+						data-clicked='0'><i class="far fa-thumbs-up"></i></a>
+					<a id="dislikeBtn" href="#" type="button" class="mx-2 font-25 dislikeBtn" data-field="#avRate2"
+						data-clicked='0'><i class="far fa-thumbs-down"></i></a>
+					</a>
+					<span class="text-black-50" id="dislike" data-dislike="3" data-field="#avRate2"></span>
+				</div>
+			</div>
+			<div class="card px-4 py-3">
+				<div class="d-flex align-items-center">
+					<img class="rounded-circle profilePhotoInline mr-1" src="{% static '/images/profile3.png'%}"
+						alt="Imagem de perfil da luiza sonza">
+					<h5 class="my-0 ml-1">Luiza Sonza</h5>
+				</div>
+				<div class="d-flex align-items-center">
+					<div id="starRate3"></div>
+					<div id="starRate3Number" class="badgeStartRate"></div>
+				</div>
+				<span class="text-black-50 mb-3">Avaliado no dia 12 de Maio de 2020</span>
+				<p class="mb-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam gravida elit nec sapien
+					interdum
+					sagittis. Nulla dignissim erat eu mauris dignissim, ac vestibulum est laoreet. Phasellus sapien
+					metus,
+					cursus a tempus at, viverra laoreet sapien. Donec ullamcorper sit amet nibh eget aliquam. Donec
+					sodales
+					mattis orci, ut consequat tortor pretium eu. Pellentesque tincidunt, nunc non condimentum mattis,
+					metus
+					risus dignissim lacus, at consequat justo odio sit amet dui. Cras ut metus eleifend est ultricies
+					aliquam vel sit amet ante. In dignissim pellentesque suscipit. Vivamus at nisi dapibus, accumsan
+					neque
+					in, consectetur nunc. Nam efficitur ex faucibus, imperdiet ex eget, vehicula purus. Donec commodo
+					sagittis hendrerit. Proin semper eget sapien id porta. Proin sed ultricies nunc.
+				</p>
+				<h5>Essa avaliação foi útil?</h5>
+				<div id="avRate3" class="d-flex align-items-center avaliacao">
+					<span class="text-black-50" id="like" data-like="5" data-field="#avRate3"></span>
+					<a id="likeBtn" href="#" type="button" class="mx-2 font-25 likeBtn" data-field="#avRate3"
+						data-clicked='0'><i class="far fa-thumbs-up"></i></a>
+					<a id="dislikeBtn" href="#" type="button" class="mx-2 font-25 dislikeBtn" data-field="#avRate3"
+						data-clicked='0'><i class="far fa-thumbs-down"></i></a>
+					</a>
+					<span class="text-black-50" id="dislike" data-dislike="2" data-field="#avRate3"></span>
+				</div>
+			</div>
+		</div> {% endcomment %}
+	</div>
+
+
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block corpo %}
+<div class="my-4 container">
+    <div class="d-flex">
+        <h2 class="my-3">Cadastro por código</h2>
+        <div class="ml-auto d-flex flex-column">
+            <a href="{% url 'produto:painelAdminProduto'%}" class="text-dark text-decoration-none h6 my-auto"><i class="fas fa-arrow-left mr-2"></i>Voltar</a>
+        </div>
+    </div>
+    {% if messages %}
+        {% for message in messages %}
+        <div {% if message.tags %} class=" alert font-weight-bold text-dark {{message.tags}} alert-dismissible my-2 w-75"{% endif %} role="alert">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            {{ message }}
+        </div>
+        {% endfor %}
+    {% endif %}
+    <form method="GET" action="{% url 'produto:cadastraProdutoPorCodigo' %}" class="form-inline mb-sm-2 my-lg-auto mx-auto">
+        <div class="input-group">
+            {{form.codigo}}
+            <div class="input-group-append">
+                <button id="botao" type="submit" class="btn btn-primary">
+                    <i class="fas fa-search"></i> Buscar
+                </button>
+            </div>
+        </div>
+    </form>
+    {% if produto != "" %}
+        <div class="card w-75 mx-auto my-4 px-3 py-2">
+            <h5 class="font-weight-bold mb-3">{{produto.nome}}</h5>
+            <div class="row">
+                <div class="col-lg-6 d-flex align-items-center mb-2 mb-lg-0">   
+                    <img class="img-fluid w-100" src="{{produto.imagem}}"
+                    alt="{{produto.nome}}">
+                </div>
+                <div class="col-lg-6 py-2 d-flex flex-column">
+                        <div>
+                            <h5 class="d-inline font-weight-bolder">Código: <h6 class="d-inline my-auto font-weight-normal">{{produto.codigo}}</h6></h5>
+                        </div>
+                        <div>
+                            <h5 class="d-inline font-weight-bolder">Altura: <h6 class="d-inline my-auto font-weight-normal">{{produto.altura}} cm</h6></h5>
+                        </div>
+                        <div>
+                            <h5 class="d-inline font-weight-bolder">Largura: <h6 class="d-inline my-auto font-weight-normal">{{produto.largura}} cm</h6></h5>
+                        </div>
+                        <div>
+                            <h5 class="d-inline font-weight-bolder">Profundidade: <h6 class="d-inline my-auto font-weight-normal">{{produto.profundidade}} cm</h6></h5>
+                        </div>
+                        <div>
+                            <h5 class="d-inline font-weight-bold">Unidades por Caixa: <h6 class="d-inline my-auto font-weight-normal">{{produto.unidadesPorCaixa}}</h6></h5>
+                        </div>
+                        <div>
+                            <h5 class="d-inline font-weight-bolder font-weight-bolder">M² por Caixa: <section class="d-inline my-auto font-weight-normal">{{produto.multiploDeVenda}} m²</section></h5>
+                        </div>
+                        <h4 class="my-4 text-center mx-auto">R$ {{produto.preco}}/m²</h4>
+                        
+                        <form method="POST" action="{% url 'produto:cadastraProdutoPorCodigo' %}" class="mt-auto">
+                            {{formCategoria.categoria}}
+                            <div class="mt-2">
+                                <button id="botao" type="submit" class="ml-auto btn btn-primary">
+                                    {% csrf_token %}
+                                    <i class="fas fa-paper-plane"></i> Enviar
+                                </button>
+                            </div>
+                        </form>
+                        
+                </div>
+            </div>
+        </div>
+        
+    {% endif %}
+</div>
+{% endblock %}

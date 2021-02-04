@@ -1,0 +1,77 @@
+.navbar-brand{
+    border-radius: 35%;
+    height: 76px;
+    align-items: center;
+}
+
+.brandLogo{
+    height: 50px;
+}
+
+.noneOnHover:hover{
+    text-decoration: none;
+}
+
+.font25{
+    font-size: 25px;
+}
+
+.nav-item{
+    font-size: 14px !important;
+}
+
+.botaoPesquisa, .botaoPesquisa:hover {
+    border-radius: 40%;
+}
+
+.carousel-indicators li{
+    background-color: rgb(204, 204, 204)
+}
+
+.carousel-indicators .active{
+    background-color:  rgb(204, 204, 204)
+}
+
+
+.carousel-control-prev,
+.carousel-control-next {
+  font-size: 300%;
+  color:  rgb(204, 204, 204);
+  opacity: 0.4;
+  transition: opacity 0.15s ease;
+}
+
+.carousel-control-prev:hover, .carousel-control-prev:focus,
+.carousel-control-next:hover,
+.carousel-control-next:focus {
+  font-size: 350%;
+  color:  rgb(204, 204, 204);
+  text-decoration: none;
+  outline: 0;
+  opacity: 0.9;
+}
+
+
+body{
+    min-height: 100vh;
+}
+
+.font-22{
+    font-size: 22px;
+}
+
+.font-14{
+    font-size: 14px !important;
+}
+
+.linkButton{
+    border: 0;
+    padding: 0;
+    display: inline;
+    background: none;
+    text-decoration: underline;
+}
+
+.inputQuantidade{
+    width: 180px;
+}

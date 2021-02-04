@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block corpo %}
+{% for row in produtos.produtos %}
+    <p>{{row.numero}} -> {{row.produto.codigo}}</p>
+{% endfor %}
+{% endblock %}
