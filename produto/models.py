@@ -2,7 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 from categoria.models import Categoria
-import requests
+import re
 
 class Produto(models.Model):
     
@@ -15,10 +15,11 @@ class Produto(models.Model):
     altura = models.DecimalField(max_digits=5, decimal_places=2, default=10)
     largura = models.DecimalField(max_digits=5, decimal_places=2, default=10)
     profundidade = models.DecimalField(max_digits=5, decimal_places=2, default=10)
+    pesoBruto = models.DecimalField(max_digits=6, decimal_places=2, default=10)
     unidadesPorCaixa = models.DecimalField(max_digits=5, decimal_places=0, default=1, blank=True)
     unidadeDeVenda = models.CharField(max_length=15, default='un', blank = True)
     multiploDeVenda = models.DecimalField(max_digits=5, decimal_places=2, default=1, blank=True)
-    descricao = models.TextField(max_length=800, default="",blank = True)
+    descricao = models.TextField(max_length=2000, default="",blank = True)
     slug = models.SlugField(max_length=100, default = '',blank = True)
     categoria = models.ForeignKey(Categoria, on_delete=models.SET_NULL, null=True, default=None, blank=True)
 
@@ -27,6 +28,7 @@ class Produto(models.Model):
         if(type(self.multiploDeVenda)==str):
             self.multiploDeVenda = float(self.multiploDeVenda.replace(",", "."))
         self.slug = slugify(value, allow_unicode=False)
+        self.descricao = re.sub('<[^>]+>', '', self.descricao)
         super().save(*args, **kwargs)
 
     class Meta:
@@ -34,9 +36,10 @@ class Produto(models.Model):
         verbose_name_plural = ("Produtos")
         db_table = 'produto'
         ordering = ('codigo', 'nome',)
+        permissions = (("administrativo", "Pode administrar os produtos"),)  
 
     def __str__(self):
-        return f"{self.nome} custa {self.preco}"
+        return f"{self.codigo} -> {self.nome}"
 
     def getAbsoluteUrl(self):
         return reverse('produto:paginaProduto', args=[self.codigo, self.slug])

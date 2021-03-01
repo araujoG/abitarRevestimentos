@@ -1,70 +1,80 @@
-.navbar-brand{
+@font-face{
+    font-family: Roboto;
+    src: url(../webfonts/Roboto-Regular.ttf);
+}
+
+.navbar-brand {
     border-radius: 35%;
     height: 76px;
     align-items: center;
 }
 
-.brandLogo{
+.brandLogo {
     height: 50px;
 }
 
-.noneOnHover:hover{
+.brandInline {
+    height: 32px;
+}
+
+.noneOnHover:hover {
     text-decoration: none;
 }
 
-.font25{
+.font25 {
     font-size: 25px;
 }
 
-.nav-item{
+.nav-item {
     font-size: 14px !important;
 }
 
-.botaoPesquisa, .botaoPesquisa:hover {
+.botaoPesquisa,
+.botaoPesquisa:hover {
     border-radius: 40%;
 }
 
-.carousel-indicators li{
+.carousel-indicators li {
     background-color: rgb(204, 204, 204)
 }
 
-.carousel-indicators .active{
-    background-color:  rgb(204, 204, 204)
+.carousel-indicators .active {
+    background-color: rgb(204, 204, 204)
 }
-
 
 .carousel-control-prev,
 .carousel-control-next {
-  font-size: 300%;
-  color:  rgb(204, 204, 204);
-  opacity: 0.4;
-  transition: opacity 0.15s ease;
+    font-size: 300%;
+    color: rgb(204, 204, 204);
+    opacity: 0.4;
+    transition: opacity 0.15s ease;
 }
 
-.carousel-control-prev:hover, .carousel-control-prev:focus,
+.carousel-control-prev:hover,
+.carousel-control-prev:focus,
 .carousel-control-next:hover,
 .carousel-control-next:focus {
-  font-size: 350%;
-  color:  rgb(204, 204, 204);
-  text-decoration: none;
-  outline: 0;
-  opacity: 0.9;
+    font-size: 350%;
+    color: rgb(204, 204, 204);
+    text-decoration: none;
+    outline: 0;
+    opacity: 0.9;
 }
 
-
-body{
+body {
     min-height: 100vh;
+    font-family: Roboto;
 }
 
-.font-22{
+.font-22 {
     font-size: 22px;
 }
 
-.font-14{
+.font-14 {
     font-size: 14px !important;
 }
 
-.linkButton{
+.linkButton {
     border: 0;
     padding: 0;
     display: inline;
@@ -72,6 +82,68 @@ body{
     text-decoration: underline;
 }
 
-.inputQuantidade{
+.btn-outline-success:hover{
+    color: whitesmoke;
+}
+
+.inputQuantidade {
     width: 180px;
+}
+
+.inputCepFrete{
+    width: 250px;
+}
+
+.formSelect{
+    display: contents;
+}
+
+.login{
+    max-width: 360px;
+}
+
+.imgCard{
+    height:253px; 
+    background-repeat:no-repeat !important; 
+    background-position: center!important; 
+    background-size:contain!important;
+}
+
+.alert-warning{
+    color: #886704cf
+}
+
+.alert-success{
+    color: rgba(16, 90, 16, 0.7)
+}
+
+.alert-info{
+    color: rgba(16, 16, 90, 0.7)
+}
+
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu a::after {
+    transform: rotate(-90deg);
+    position: absolute;
+    right: 6px;
+    top: .8em;
+}
+
+.dropdown-submenu .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-left: .1rem;
+    margin-right: .1rem;
+}
+
+
+.fontWhite,
+.fontWhite:hover,
+.fontWhite:focus,
+.fontWhite:hover,
+.fontWhite:focus{
+    color: whitesmoke;
 }

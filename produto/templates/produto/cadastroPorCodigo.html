@@ -10,7 +10,7 @@
     </div>
     {% if messages %}
         {% for message in messages %}
-        <div {% if message.tags %} class=" alert font-weight-bold text-dark {{message.tags}} alert-dismissible my-2 w-75"{% endif %} role="alert">
+        <div {% if message.tags %} class=" alert font-weight-bold {{message.tags}} alert-dismissible my-2 w-75 mx-auto"{% endif %} role="alert">
             <button type="button" class="close" data-dismiss="alert">×</button>
             {{ message }}
         </div>
@@ -50,14 +50,16 @@
                         <div>
                             <h5 class="d-inline font-weight-bold">Unidades por Caixa: <h6 class="d-inline my-auto font-weight-normal">{{produto.unidadesPorCaixa}}</h6></h5>
                         </div>
+                        {% if produto.unidadeDeVenda == 'm²' %}
                         <div>
                             <h5 class="d-inline font-weight-bolder font-weight-bolder">M² por Caixa: <section class="d-inline my-auto font-weight-normal">{{produto.multiploDeVenda}} m²</section></h5>
                         </div>
-                        <h4 class="my-4 text-center mx-auto">R$ {{produto.preco}}/m²</h4>
+                        {% endif %}
+                        <h4 class="my-4 text-center mx-auto">R$ {{produto.preco}}/{{produto.unidadeDeVenda}}</h4>
                         
-                        <form method="POST" action="{% url 'produto:cadastraProdutoPorCodigo' %}" class="mt-auto">
-                            {{formCategoria.categoria}}
-                            <div class="mt-2">
+                        <form method="POST" action="{% url 'produto:cadastraProdutoPorCodigo' %}" class="mt-auto formSelect">
+                            {{formCategoria.categoria}} 
+                            <div class="mt-2 mx-auto">
                                 <button id="botao" type="submit" class="ml-auto btn btn-primary">
                                     {% csrf_token %}
                                     <i class="fas fa-paper-plane"></i> Enviar

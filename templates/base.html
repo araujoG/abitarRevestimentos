@@ -2,12 +2,13 @@
 
 <!doctype html>
 <html lang="en">
+
 <head>
 	<title>
-    {% block titulo %}
-    Abitar Revestimentos
-    {% endblock %}
-    </title>
+		{% block titulo %}
+		Abitar Revestimentos
+		{% endblock %}
+	</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -20,7 +21,8 @@
 <body class="d-flex flex-column">
 	<div class="bgimage d-none d-lg-block"> </div>
 	<div class="bgimage2 l-2 d-block d-lg-none"></div>
-	<nav class="navbar sticky-top navbar-light bg-gradient-secondary navbar-expand-lg" style="background-color: #90908f">
+	<nav class="navbar sticky-top navbar-light bg-gradient-secondary navbar-expand-lg"
+		style="background-color: #90908f">
 		<div class="container carterOne font14">
 			<a class="navbar-brand mr-3" href="/"><img class="m-2 brandLogo" src="{% static 'images/logoAbitar.png'%}"
 					alt="Abitar Revestimentos"></a>
@@ -29,20 +31,33 @@
 				aria-controls="menu" aria-expanded="false" aria-label="Botão de navegação">
 				<span class="navbar-toggler-icon"></span>
 			</button>
-			
+
 			<div class="collapse navbar-collapse" id="menu">
 				<div class="navbar-nav my-sm-2 my-lg-auto">
-					<div class="dropdown">
+					<div class="dropdown" id="dropdownCategoria">
 						<a class="nav-link nav-item dropdown-toggle" data-toggle="dropdown" href="#">Categorias</a>
 						<div class="dropdown-menu">
-						{% for c in listaCategorias %}
-							<a class="dropdown-item" href="#">{{ c.nome }}</a>
-						{% endfor %}
-							<a class="dropdown-item border-top" href="">Todos os produtos</a>
+							{% for c in categoriasDoSite %}
+							<li class="dropdown-submenu">
+								<a class="dropdown-item dropdown-toggle font-14" href="#">{{c.categoria}}</a>
+								{% if c.listaFilhos %}
+								<ul class="dropdown-menu">
+									{% for subC in c.listaFilhos %}
+									<li><a class="dropdown-item"
+											href="{% url 'categoria:paginaCategoria' subC.slug %}">{{subC.nome}}</a>
+									</li>
+									{% endfor %}
+								</ul>
+								{% endif %}
+							</li>
+							{% endfor %}
+							<a class="dropdown-item font-14 border-top" href="{% url 'produto:listaProduto'%}">Todos os
+								produtos</a>
 						</div>
 					</div>
 				</div>
-				<form method="get" action="" class="form-inline mb-sm-2 my-lg-auto mx-auto">
+				<form method="get" action="{% url 'produto:listaProduto'%}"
+					class="form-inline mb-sm-2 my-lg-auto mx-auto">
 					<div class="input-group">
 						{{pesquisa.nome}}
 						<div class="input-group-append">
@@ -52,43 +67,101 @@
 					</div>
 				</form>
 				<div class="navbar-nav">
-					<a class="nav-link nav-item" href="">Meu Carrinho</a>
-					<a class="nav-link nav-item" href=""><i class="fas fa-sign-in-alt"></i> Entrar</a>
+					{% if user.is_authenticated %}
+					<div class="navbar-nav my-sm-2 my-lg-auto">
+						<div class="dropdown">
+							<a class="nav-link nav-item dropdown-toggle" data-toggle="dropdown" href="#">Olá,
+								<strong>{{ user.username }}</strong></a>
+							<div class="dropdown-menu">
+								{% if perms.is_authenticated %}
+								<a class="dropdown-item font-14" href="{% url 'produto:painelAdminProduto'%}"><i
+										class="fas fa-tools mr-2"></i> Administrar</a>
+								{% endif %}
+								<a class="dropdown-item font-14" href="{% url 'logout' %}"><i
+										class="fas fa-sign-in-alt mr-2"></i> Sair</a>
+							</div>
+						</div>
+					</div>
+					{% else %}
+					<a class="nav-link nav-item " href="{% url 'login' %}"><i class="fas fa-sign-in-alt mr-2"></i>
+						Entrar</a>
+					{% endif %}
+
 				</div>
 			</div>
 			{% endblock %}
 		</div>
 	</nav>
-	
-    {% block corpo %}
 
-    {% endblock %}
+	{% block corpo %}
+
+	{% endblock %}
+
+	<div id="modalSobre" class="modal hide" tabindex="-1" aria-labelledby="modalSobreLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h2 class="cor-secundaria mb-0">Sobre Nós</h2>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body borda-principal" style="max-height: none;">
+					<p style="font-size: 14px; color: #222;">Olá! Somos a <strong>Abitar Revestimentos</strong>,
+						comércio
+						eletrônico de materiais de construção.
+						Aqui
+						você encontra tudo para sua obra - de projetos com arquitetos renomados e mão de obra a pisos e
+						revestimentos. Trabalhamos com as principais marcas do mercado. Aproveite nossas promoções com
+						pagamento em até
+						<strong>12x sem juros</strong>! Venham visitar nosso showroom localizado na Rua Dr. Paulo César,
+						72-
+						Icaraí, Rio de Janeiro ou se preferirem, entre em contato conosco e siga-nos através de nossas
+						redes
+						sociais, faça sua obra do
+						conforto da sua casa. <strong>Atendimento individualizado</strong> e com hora marcada em nosso
+						showroom das 9:30h - 18:30h. Melhor preço garantido.</p>
+					<h3 class="mb-0">Onde estamos localizados</h3>
+					
+					<hr class="mt-2">
+					<div id="map_canvas" class="mb-3" >
+						<iframe scrolling="no" marginheight="0" marginwidth="0"
+							src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3675.3778324263462!2d-43.11244538441867!3d-22.899430743366974!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9983a92ff9f7ed%3A0x1bf423282f2e9875!2sAbitar%20Revestimentos!5e0!3m2!1spt-BR!2sbr!4v1609754829446!5m2!1spt-BR!2sbr"
+							width="100%" height="250" frameborder="0"></iframe>
+					</div>
+						<div class="d-flex justify-content-center">
+							<a class="mx-1" href="https://wa.me/5521995441122"><i style="padding: 5px;background: linear-gradient(40deg, #69ca3b, #56a61e);;border-radius: 8px;font-size: 30px;color: whitesmoke;" class="fab fa-whatsapp"></i></a>
+							<a class="mx-1" href="https://www.facebook.com/abitar.revestimentos"><i style="padding: 5px;background:linear-gradient(120deg, #3b5998, #2b4170);;border-radius: 8px;font-size: 30px;color: whitesmoke;" class="fab fa-facebook"></i></a>
+							<a class="mx-1" href="https://www.instagram.com/abitar_revestimentos/"><i style="padding: 5px;background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);border-radius: 8px;font-size: 30px;color: whitesmoke;" class="fab fa-instagram"></i></a>
+						</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
 
 	<div class="w-100 bg-primary mt-auto">
 		<div class="w-85 row justify-content-around mx-auto py-4">
-			<div class="col-md-3">
+			<div class="col-md-4">
 				<h5 class="text-light font25">Sobre nós</h5>
 				<ul class="list-unstyled ">
-					<li><a class="noneOnHover" href="#">Quem somos</a></li>
+					<li><a class="noneOnHover" href="#" data-toggle="modal" data-target="#modalSobre">Quem somos</a>
+					</li>
 					<li><a class="noneOnHover" href="#">Time de desenvolvedores</a></li>
 					<li><a class="noneOnHover" href="#">Trabalhe conosco</a></li>
 				</ul>
 			</div>
-			<div class="col-md-4 col-lg-3 mb-3 mb-md-0 text-light">
+			<div class="col-md-5 col-lg-4 mb-3 mb-md-0 text-light">
 				<h5 class="font25">Horário de Funcionamento</h5>
 				<span>Segunda a Sexta 9:30h às 18:30h</span>
 				<br>
 			</div>
-			<div class="col-md-2 mb-3 mb-md-0 font25">
-				<a class="text-light redeSocial" href="#"><i class="fab fa-whatsapp"></i></a>
-				<a class="text-light redeSocial mx-2" href="#"><i class="fab fa-facebook"></i></a>
-				<a class="text-light redeSocial" href="#"><i class="fab fa-instagram"></i></a>
+			<div class="col-md-3 mb-3 mb-md-0 h2">
+				<a class="text-light redeSocial" href="https://wa.me/5521995441122"><i class="fab fa-whatsapp"></i></a>
+				<a class="text-light redeSocial mx-2" href="https://www.facebook.com/abitar.revestimentos"><i class="fab fa-facebook"></i></a>
+				<a class="text-light redeSocial" href="https://www.instagram.com/abitar_revestimentos/"><i class="fab fa-instagram"></i></a>
 			</div>
 
-			<div class="col-md-3 mb-sm-2">
-				<h5 class="text-light font25">Formas de Pagamento</h5>
-
-			</div>
 			<div>
 				<p class="text-secondary mx-auto text-center mb-0 mt-2">
 					Abitar Revestimentos | R. Dr. Paulo César, 72 - Icaraí, Niterói - RJ, 24220-400
@@ -96,7 +169,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<!-- Optional JavaScript -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 	<script src="{% static 'js/jquery-3.5.1.min.js'%}"></script>
@@ -108,7 +181,7 @@
 	<script src="{% static 'js/script.js'%}?version={%now "U"%}"></script>
 
 	{% block javascript %}
-    {% endblock javascript %}
+	{% endblock javascript %}
 </body>
 
 </html>

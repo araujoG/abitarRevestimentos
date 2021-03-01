@@ -27,18 +27,33 @@
 		<span class="sr-only">Próximo</span>
 	</a>
 </div>
-
-<div class="toast fixed-bottom mr-3 ml-auto" role="alert" aria-live="assertive" aria-atomic="true" data-delay="4000"
-	data-autohide="false">
-	<div class="toast-header py-2">
-		<h4 class="mr-auto my-auto carterOne text-warning">Área Administrativa</h4>
-		<button type="button" class="ml-2 mb-1 close my-auto" data-dismiss="toast" aria-label="Close">
-			<i class="fas fa-times"></i>
-		</button>
-</div>
-	<div class="toast-body carterOne d-flex justify-content-around">
-	<button onclick="location.href='{% url 'produto:painelAdminProduto'%}'" class="btn btn-outline-info">Produtos</button>
-	<button onclick="" class="btn btn-outline-info">Categorias</button>
-	</div>
+<div class="container">
+	<h2 class="carterOne mb-3 mt-2">
+		<strong class="">Mais recentes</strong>
+	</h2>
+	{% if produtos %}
+		<div class="row mb-3">
+			{% for produto in produtos %}
+			<div class="col-xl-3 col-lg-4 col-md-6 col-12">
+				<div class="card mb-3">
+					<div class="imgCard" alt="{{ produto.nome }}" style="background:url({{ produto.imagem }});"></div>
+					
+					<div class="card-body p-2">
+						<h6 class="card-title " data-maxlines='1'>{{ produto.nome }}</h5>
+						<section class="text-center">
+							<h5 class="text-primary font-weight-bold">R$ {{ produto.preco }}</p>
+							<button onclick="location.href='{{produto.getAbsoluteUrl}}'"
+								class="btn btn-outline-dark">Comprar</button>
+						</section>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	{% else %}
+		<div class="d-flex justify-content-center align-items-center" style="min-height:400px">
+			<h3 class="mb-0 text-danger">Nenhum resultado foi encontrado...</h3>
+		</div>
+	{% endif %}
 </div>
 {% endblock %}

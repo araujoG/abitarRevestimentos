@@ -29,8 +29,7 @@ SECRET_KEY = '4bbhpl-)thp%(zdh)9)7#&5yek61mjey6*luvhqm_t-z)utk)1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['221cc26afe69.ngrok.io']
 
 # Application definition
 
@@ -43,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'produto',
     'categoria',
+    'contas',
 ]
 
 MIDDLEWARE = [
@@ -69,6 +69,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'produto.contextProcessors.pesquisaProduto',
+                'categoria.contextProcessors.categorias',
             ],
         },
     },
@@ -129,3 +130,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+
+# Redirect to home URL after login (Default redirects to /accounts/profile/)
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = "/"

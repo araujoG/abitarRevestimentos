@@ -5,84 +5,96 @@
     <div class="d-flex">
         <h2 class="my-3">Produtos Cadastrados</h2>
         <div class="ml-auto d-flex flex-column">
-            <a href="{% url 'produto:cadastraProdutoPorCodigo'%}" class="text-dark text-decoration-none h6 my-auto"><i class="fas fa-plus mr-2 text-success"></i>Novo Produto</a>
+            <a href="{% url 'produto:cadastraProdutoPorCodigo'%}" class="text-dark text-decoration-none h6 my-auto"><i
+                    class="fas fa-plus mr-2 text-success"></i>Novo Produto</a>
         </div>
     </div>
     {% if messages %}
         {% for message in messages %}
-        <div {% if message.tags %} class=" alert font-weight-bold text-dark {{message.tags}} alert-dismissible my-2 w-75"{% endif %} role="alert">
+        <div {% if message.tags %} class=" alert font-weight-bold {{message.tags}} alert-dismissible my-2 w-75 mx-auto"{% endif %} role="alert">
             <button type="button" class="close" data-dismiss="alert">×</button>
             {{ message }}
         </div>
         {% endfor %}
     {% endif %}
+
     {% if produtos %}
-        <div class="row">
-            {% for produto in produtos %}
-            <div class="col-lg-6">
-                <div class="card p-2 mb-3">
-                    <div class="row cardProdutoAdmin">
-                        <div class="my-auto mx-auto col-lg-4 col-md-5 col-sm-6 justify-content-center align-items-center d-flex" style="height: 150px">
-                                <img class="img-fluid h-100" src="{{ produto.imagem }}" alt="{{ produto.nome }}">
+    <div class="row">
+        {% for produto in produtos %}
+        <div class="col-lg-6">
+            <div class="card p-2 mb-3">
+                <div class="row cardProdutoAdmin">
+                    <div class="my-auto mx-auto col-lg-4 col-md-5 col-sm-6 justify-content-center align-items-center d-flex"
+                        style="height: 150px">
+                        <img class="img-fluid h-100" src="{{ produto.imagem }}" alt="{{ produto.nome }}">
+                    </div>
+                    <div class="col-lg-8 col-md-7 col-sm-6 mt-1 d-flex flex-column justify-content-start">
+                        <div class="d-flex justify-content-start align-items-center maxLines">
+                            <h5 class="card-title">{{produto.nome}}</h5>
                         </div>
-                        <div class="col-lg-8 col-md-7 col-sm-6 mt-1 d-flex flex-column justify-content-start">
-                            <div class="d-flex justify-content-start align-items-center maxLines">
-                                <h5 class="card-title">{{produto.nome}}</h5>
-                            </div>
-                            <h5 class="text-primary font-weight-bold mb-2 precoCarrinho">
-                                R$ {{produto.preco}}
-                            </h5>
-                            <div class="mt-auto d-flex justify-content-between">
-                                <button onclick="location.href='{{produto.getAbsoluteUrl}}'"
-								class="btn btn-outline-dark">Visualizar</button>
-                                <div class="dropdown align-self-end">
-                                    <a class="h6 mr-3 mb-3" data-toggle="dropdown" href="#"><i class="fas fa-ellipsis-h"></i></a>
-                                    <div class="dropdown-menu">
-                                        <a href="" class="text-dark text-decoration-none dropdown-item font-14"><i class="h6 fas fa-edit mr-2"></i>Editar</a>
-                                        <form action="{% url 'produto:removeProduto' produto.codigo %}" method="POST" class="dropdown-item">
-                                            {% csrf_token %}
-                                            <button href="" class="linkButton text-dark text-decoration-none dropdown-item font-14">
-                                                <i class="h6 text-primary fas fa-trash-alt mr-2"></i>Excluir
-                                            </button>
-                                        </form> 
-                                        <a href="{% url 'produto:sincronizaPrecoProduto' produto.codigo %}" class="text-dark text-decoration-none dropdown-item font-14"><i class="h6 text-success fas fa-sync-alt mr-2"></i>Sincronizar Preço</a>
-                                    </div>
+                        <h5 class="text-primary font-weight-bold mb-2 precoCarrinho">
+                            R$ {{produto.preco}}
+                        </h5>
+                        <div class="mt-auto d-flex justify-content-between">
+                            <button onclick="location.href='{{produto.getAbsoluteUrl}}'"
+                                class="btn btn-outline-dark">Visualizar</button>
+                            <div class="dropdown align-self-end">
+                                <a class="h6 mr-3 mb-3" data-toggle="dropdown" href="#"><i
+                                        class="fas fa-ellipsis-h"></i></a>
+                                <div class="dropdown-menu">
+                                    <a href="{% url 'produto:editaProduto' produto.codigo produto.slug %}" class="text-dark text-decoration-none dropdown-item font-14"><i
+                                            class="h6 fas fa-edit mr-2"></i>Editar</a>
+                                    <form action="{% url 'produto:removeProduto' produto.codigo %}" method="POST"
+                                        id="formRemoverProduto">
+                                        {% csrf_token %}
+                                    </form>
+                                    <a href="#" onClick="document.getElementById('formRemoverProduto').submit();"
+                                        class="text-dark text-decoration-none dropdown-item font-14">
+                                        <i class="h6 text-primary fas fa-trash-alt mr-2"></i>Excluir
+                                    </a>
+                                    <a href="{% url 'produto:sincronizaPrecoProduto' produto.codigo %}"
+                                        class="text-dark text-decoration-none dropdown-item font-14"><i
+                                            class="h6 text-success fas fa-sync-alt mr-2"></i>Sincronizar Preço</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            {% endfor %}
-		</div>
-        {% if produtos.has_other_pages %}
-            <nav aria-label="Navegação de página exemplo">
-                <ul class="pagination justify-content-center">
-                    {% if produtos.has_previous %}
-                        <li class='page-item'><a class='page-link' href='?pagina={{ produtos.previous_page_number }}&nome={{nomePesquisado}}'>Anterior</a>
-                        </li>
-                    {% else %}
-                        <li class='page-item disabled'><a class='page-link' href='#' tabindex='-1'>Anterior</a></li>
-                    {% endif %}
-                    {% for i in produtos.paginator.page_range %}
-                        {% if produtos.number == i %}
-                            <li class='page-item active'><a class='page-link' href='#'>{{ i }} </a></li>
-                        {% else %}
-                            <li class='page-item'><a class='page-link' href='?pagina={{ i }}&nome={{nomePesquisado}}'>{{ i }}</a></li>
-                        {% endif %}
-                    {% endfor %}
-                    {% if produtos.has_next %}
-                        <li class='page-item'><a class='page-link' href='?pagina={{ produtos.next_page_number }}&nome={{nomePesquisado}}'>Próxima</a></li>
-                    {% else %}
-                        <li class='page-item disabled'><a class='page-link' href='#' tabindex='-1'>Próxima</a></li>
-                    {% endif %}
-                </ul>
-            </nav>
-        {% endif %}
-    {% else %}
-        <div class="d-flex justify-content-center align-items-center carterOne" >
-        Nenhum resultado foi encontrado...
         </div>
+
+        {% endfor %}
+    </div>
+    {% if produtos.has_other_pages %}
+    <nav aria-label="Navegação de página exemplo">
+        <ul class="pagination justify-content-center">
+            {% if produtos.has_previous %}
+            <li class='page-item'><a class='page-link'
+                    href='?pagina={{ produtos.previous_page_number }}&nome={{nomePesquisado}}'>Anterior</a>
+            </li>
+            {% else %}
+            <li class='page-item disabled'><a class='page-link' href='#' tabindex='-1'>Anterior</a></li>
+            {% endif %}
+            {% for i in produtos.paginator.page_range %}
+            {% if produtos.number == i %}
+            <li class='page-item active'><a class='page-link' href='#'>{{ i }} </a></li>
+            {% else %}
+            <li class='page-item'><a class='page-link' href='?pagina={{ i }}&nome={{nomePesquisado}}'>{{ i }}</a></li>
+            {% endif %}
+            {% endfor %}
+            {% if produtos.has_next %}
+            <li class='page-item'><a class='page-link'
+                    href='?pagina={{ produtos.next_page_number }}&nome={{nomePesquisado}}'>Próxima</a></li>
+            {% else %}
+            <li class='page-item disabled'><a class='page-link' href='#' tabindex='-1'>Próxima</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+    {% else %}
+    <div class="d-flex justify-content-center align-items-center carterOne">
+        Nenhum resultado foi encontrado...
+    </div>
     {% endif %}
 </div>
 

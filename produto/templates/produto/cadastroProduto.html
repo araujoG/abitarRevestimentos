@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block corpo %}
+	<div class="mx-auto container py-4">
+		<h2 class="carterOne">
+		{% if 'produto_id' in request.session %}
+			Alterar Produto
+		{% else %}
+			Cadastrar Produto
+		{% endif %}
+		</h2>
+		{% if messages %}
+			{% for message in messages %}
+			<div {% if message.tags %} class=" alert font-weight-bold {{message.tags}} alert-dismissible my-2 w-75 mx-auto"{% endif %} role="alert">
+				<button type="button" class="close" data-dismiss="alert">×</button>
+				{{ message }}
+			</div>
+			{% endfor %}
+    	{% endif %}
+		<form action="{% url 'produto:cadastraProduto' %}" method="POST" class="pb-4 carter" novalidate style="min-height: 323px">
+			{{form.as_p}}
+
+			<div class="d-flex justify-content-end">
+				
+				<button id="botao" type="submit" class="btn btn-primary">
+				{% csrf_token %}
+					{% if 'produtoEditado' in request.session %}
+					<i class="fas fa-edit mr-1"></i> Alterar
+					{% else %}
+					<i class="fas fa-plus-circle mr-1"></i> Cadastrar
+					{% endif %}
+				</button>
+			</div>
+		</form>
+		
+	</div>
+{% endblock %}

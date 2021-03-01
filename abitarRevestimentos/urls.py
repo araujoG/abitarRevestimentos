@@ -20,5 +20,7 @@ from abitarRevestimentos import views
 urlpatterns = [
     path('', views.index, name="index"),
     path('produto/', include('produto.urls')),
+    path('categoria/', include('categoria.urls')),
     path('admin/', admin.site.urls),
+    path('contas/', include('django.contrib.auth.urls')),
 ]
